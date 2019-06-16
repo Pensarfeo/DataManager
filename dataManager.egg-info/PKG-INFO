@@ -2,7 +2,7 @@ Metadata-Version: 2.1
 Name: dataManager
 Version: 0.0.1
 Summary: A simple library to simplify data handling in deep learning environments. With an API non dissimilar to PyTorch DataLoader
-Home-page: https://github.com/pypa/sampleproject
+Home-page: https://github.com/Pensarfeo/DataManager
 Author: Pedro A. Favuzzi
 Author-email: pa.favuzzi@gmail.com
 License: UNKNOWN

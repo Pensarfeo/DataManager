@@ -11,7 +11,7 @@ setuptools.setup(
     description = "A simple library to simplify data handling in deep learning environments. With an API non dissimilar to PyTorch DataLoader",
     long_description = long_description,
     long_description_content_type = "text/markdown",
-    url = "https://github.com/pypa/sampleproject",
+    url = "https://github.com/Pensarfeo/DataManager",
     packages = setuptools.find_packages(),
     classifiers = [
         "Programming Language :: Python :: 3",
