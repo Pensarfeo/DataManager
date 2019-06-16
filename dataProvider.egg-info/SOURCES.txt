@@ -1,0 +1,9 @@
+README.md
+setup.cfg
+setup.py
+dataProvider/__init__.py
+dataProvider.egg-info/PKG-INFO
+dataProvider.egg-info/SOURCES.txt
+dataProvider.egg-info/dependency_links.txt
+dataProvider.egg-info/requires.txt
+dataProvider.egg-info/top_level.txt

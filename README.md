@@ -1,15 +1,15 @@
-# Data
+# DataManager
 
-A simple library to simplify data handling in Reinforcement learning environments. With an API non dissimilar to PyTorch Data Provider
+A simple library to simplify data handling in deep learning environments. With an API non dissimilar to PyTorch DataLoader
 
 ## Usage
 
 ```python
-    from data import Providers as DataProvider
+    from dataManager import Manager as DataManager
 
     dataFunction = lambda x: (reduceImageSize(inputImages,x), inputLabels[x], ...)
     # Initialize Data Providers
-    dataProvider = DataProvider(
+    dataManger = DataManger(
         data = dataFunction,
         bz = 32,  
         stochasticSampling = True,
@@ -18,7 +18,7 @@ A simple library to simplify data handling in Reinforcement learning environment
 
     # provide the data for the tenth batch
     i = 10
-    dataProvider(i, stochastic = False).shape
+    dataManger(i, stochastic = False).shape
     # > (32, ...)
 ```
 
