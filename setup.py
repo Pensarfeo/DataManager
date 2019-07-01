@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name = "dataManager",
-    version = "0.0.2",
+    version = "0.1.2",
     author = "Pedro A. Favuzzi",
     author_email = "pa.favuzzi@gmail.com",
     description = "A simple library to simplify data handling in deep learning environments. With an API non dissimilar to PyTorch DataLoader",
