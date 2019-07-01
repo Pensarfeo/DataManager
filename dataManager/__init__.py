@@ -42,6 +42,7 @@ class Manager():
         self.step = 0
         self.indexingShape = indexingShape
         self.stochastic = stochasticSampling
+        self.maxIters = np.prod(indexingShape) // self.bz
 
 
     def getBatch(self, step = None, bz = None):
@@ -77,15 +78,37 @@ class Manager():
             indexes = indexes[0]
 
         return np.array(indexes)
-    
-    def __call__(self, i = 0, stochastic = None):
+
+    def getIndexes(self, i = 0, stochastic = None):
         _stoc = stochastic if stochastic != None else self.stochastic
 
         if _stoc:
             batchIndexes = self.getStochasticBatch()
         else:
             batchIndexes = self.getBatch(step = i)
-            self.step = i
-        batch = self.data(batchIndexes)
+        
+        return batchIndexes
 
+    def __call__(self, i = 0, stochastic = None):
+        batchIndexes = self.getIndexes(i = i, stochastic = None)
+        batch = self.data(batchIndexes)
         return batch
+    
+    def __iter__(self):
+        self.currentIterI = 0
+        return self
+    
+    def __next__(self):
+        indexes = self.getIndexes(i = self.currentIterI)
+        
+        if self.currentIterI == self.maxIters:
+            indexes = list(filter(lambda x: x <  (self.maxIters * self.bz), indexes))
+        elif self.currentIterI == self.maxIters + 1:
+            raise StopIteration
+            self.currentIterI = 0
+        
+        data = self.data(indexes)
+        currentIterI = self.currentIterI
+
+        self.currentIterI += 1
+        return (currentIterI, data, indexes)
