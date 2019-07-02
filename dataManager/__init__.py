@@ -35,14 +35,16 @@ def getRandomSample(self, bz = None):
 
 
 class Manager():
-    def __init__(self, data, indexingShape = None, bz = 32, stochasticSampling = True):
+    def __init__(self, data, indexingShape = None, bz = 32, stochasticSampling = True, reshuffle = False):
         self.bz = bz
         # TODO: the lambda is probably wrong!
         self.data = data if callable(data) else (lambda indexes: data[indexes])
         self.step = 0
         self.indexingShape = indexingShape
         self.stochastic = stochasticSampling
+        self.reshuffle = reshuffle
         self.maxIters = np.prod(indexingShape) // self.bz
+        self.reshuffledIndexes = []
 
 
     def getBatch(self, step = None, bz = None):
@@ -96,19 +98,29 @@ class Manager():
     
     def __iter__(self):
         self.currentIterI = 0
+        numEles = np.prod(self.indexingShape)
+        if self.reshuffle:
+            self.indexMap = np.random.choice(numEles, numEles, replace=False)
+        else:
+            self.indexMap = np.array(range(numEles))
         return self
     
     def __next__(self):
         indexes = self.getIndexes(i = self.currentIterI)
         
         if self.currentIterI == self.maxIters:
-            indexes = list(filter(lambda x: x <  (self.maxIters * self.bz), indexes))
+            indexes = list(filter(lambda x: x <  np.prod(self.indexingShape), indexes))
+
+            if len(indexes) == 0:
+                raise StopIteration
         elif self.currentIterI == self.maxIters + 1:
             raise StopIteration
             self.currentIterI = 0
-        
-        data = self.data(indexes)
+
+        actualIndex = self.indexMap[indexes]
+
+        data = self.data(actualIndex)
         currentIterI = self.currentIterI
 
         self.currentIterI += 1
-        return (currentIterI, data, indexes)
+        return (currentIterI, data, actualIndex)
